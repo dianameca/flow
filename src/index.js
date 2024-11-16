@@ -1,28 +1,26 @@
-class AudioProcessor {
-    constructor(audioElement) {
-      this.audioElement = audioElement;
-      this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
-      this.analyser = this.audioContext.createAnalyser();
-      this.source = this.audioContext.createMediaElementSource(audioElement);
-      this.source.connect(this.analyser);
-      this.analyser.connect(this.audioContext.destination);
-      this.analyser.fftSize = 256;
-      this.frequencyData = new Uint8Array(this.analyser.frequencyBinCount);
-    }
-  
-    getFrequencyData() {
-      this.analyser.getByteFrequencyData(this.frequencyData);
-      return this.frequencyData;
-    }
-  
-    start() {
-      this.audioElement.play();
-    }
-  
-    stop() {
-      this.audioElement.pause();
-    }
+import { AudioProcessor } from './audioProcessor';
+import { createShapes } from './shapes';
+import { applyShaders } from './shaders';
+
+class MusicVisualizer {
+  constructor(audioElement, canvasElement) {
+    this.audioProcessor = new AudioProcessor(audioElement);
+    this.canvas = canvasElement;
+    this.shapes = createShapes(this.canvas);
+    this.shaders = applyShaders(this.canvas);
   }
-  
-  module.exports = AudioProcessor;
-  
+
+  start() {
+    this.audioProcessor.initialize();
+    this.animate();
+  }
+
+  animate() {
+    const frequencyData = this.audioProcessor.getFrequencyData();
+    this.shapes.update(frequencyData);
+    this.shaders.update(frequencyData);
+    requestAnimationFrame(this.animate.bind(this));
+  }
+}
+
+export default MusicVisualizer;
