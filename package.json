@@ -9,7 +9,7 @@
     "start": "webpack serve --open",
     "build": "webpack",
     "test": "jest",
-    "deploy": "gh-pages -d public"
+    "deploy": "npm run build && gh-pages -d dist"
   },
   "keywords": [],
   "author": "",
