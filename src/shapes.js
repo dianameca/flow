@@ -1,25 +1,15 @@
-export function createShapes(canvas) {
-  const ctx = canvas.getContext('2d');
-  let shapes = [];
+export function createWaveformMesh() {
+  let geometry = new THREE.BoxGeometry(0.1, 1, 0.1);
+  let material = new THREE.MeshBasicMaterial({ color: 0x00aee3 });
+  let mesh = new THREE.Group();
 
-  function createCircle(radius, x, y) {
-    return { radius, x, y };
+  for (let i = 0; i < 128; i++) {
+      let cube = new THREE.Mesh(geometry, material);
+      cube.position.x = i * 0.2 - 12;
+      cube.position.y = 0;
+      cube.position.z = 0;
+      mesh.add(cube);
   }
 
-  function draw() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    shapes.forEach(shape => {
-      ctx.beginPath();
-      ctx.arc(shape.x, shape.y, shape.radius, 0, Math.PI * 2);
-      ctx.fillStyle = 'rgba(255, 0, 0, 0.5)';
-      ctx.fill();
-    });
-  }
-
-  function update(frequencyData) {
-    shapes = frequencyData.map((value, index) => createCircle(value / 2, index * 20, canvas.height / 2));
-    draw();
-  }
-
-  return { update };
-} 
+  return mesh;
+}

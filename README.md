@@ -1,7 +1,16 @@
 # flow
 
+## dev 
+
 ```
-npm install @dianameca/flow
+rm -rf node_modules
+rm package-lock.json
+npm install
+npx webpack serve
 ```
 
-## API 
+## todo
+```
+@dianameca/flow
+api
+```

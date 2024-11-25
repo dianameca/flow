@@ -1,26 +1,6 @@
-const AudioProcessor = require('./audioProcessor');
-const Renderer = require('./renderer');
-
-class AudioDisplay {
-  constructor(audioElement, canvasElement) {
-    this.audioProcessor = new AudioProcessor(audioElement);
-    this.renderer = new Renderer(canvasElement);
-  }
-
-  start() {
-    this.audioProcessor.start();
-    this.render();
-  }
-
-  stop() {
-    this.audioProcessor.stop();
-  }
-
-  render() {
-    requestAnimationFrame(() => this.render());
-    const frequencyData = this.audioProcessor.getFrequencyData();
-    this.renderer.renderBars(frequencyData);
-  }
+export function initScene() {
+  let scene = new THREE.Scene();
+  let light = new THREE.AmbientLight(0xffffff, 1);
+  scene.add(light);
+  return scene;
 }
-
-module.exports = AudioDisplay;
